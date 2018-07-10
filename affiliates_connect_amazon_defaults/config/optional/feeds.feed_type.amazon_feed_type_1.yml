@@ -1,0 +1,372 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - affiliates_connect
+    - feeds_advance_crawler
+    - feeds_ex
+    - feeds_tamper
+third_party_settings:
+  feeds_tamper:
+    tampers:
+      da382b69-b5ec-4ba3-b267-ace7b11c1efb:
+        character: ''
+        side: trim
+        plugin: trim
+        source: producttitle
+        weight: -9
+        uuid: da382b69-b5ec-4ba3-b267-ace7b11c1efb
+      d5ef3cba-d964-45ea-9466-e99556d56a5b:
+        separator: '='
+        plugin: end
+        source: product_brand_feed
+        weight: 0
+        uuid: d5ef3cba-d964-45ea-9466-e99556d56a5b
+      d62eb252-02b6-4cf0-8d2a-64d266ba6fe3:
+        plugin: stock
+        source: availability
+        weight: -9
+        uuid: d62eb252-02b6-4cf0-8d2a-64d266ba6fe3
+      d3b07bcd-54d9-4284-9a0b-2ab45639e209:
+        default_value: ₹
+        only_if_empty: false
+        plugin: default_value
+        source: _currency
+        weight: 0
+        uuid: d3b07bcd-54d9-4284-9a0b-2ab45639e209
+      d792d02f-9fad-44ce-acc6-39ce9d2ebbbf:
+        glue: ''
+        plugin: implode
+        source: product_category_feed
+        weight: 0
+        uuid: d792d02f-9fad-44ce-acc6-39ce9d2ebbbf
+      870792d5-5787-49d4-87d8-8b1f4cd8b016:
+        regex: '/\(([A-Za-z0-9 .|]+?)\)/'
+        index: 1
+        plugin: regex
+        source: product_seller_rating
+        weight: 0
+        uuid: 870792d5-5787-49d4-87d8-8b1f4cd8b016
+      c4368cb7-e30f-44d9-b9b3-c86511b52401:
+        default_value: affiliates_connect_amazon
+        only_if_empty: false
+        plugin: default_value
+        source: _plugin_id
+        weight: 0
+        uuid: c4368cb7-e30f-44d9-b9b3-c86511b52401
+      14b0c816-fee7-4be3-9fdd-4559920e813e:
+        character: ''
+        side: trim
+        plugin: trim
+        source: product_description_feed
+        weight: -9
+        uuid: 14b0c816-fee7-4be3-9fdd-4559920e813e
+      a5a89fac-accf-47e6-84a7-c0fb7abb450b:
+        default_value: ' '
+        only_if_empty: true
+        plugin: default_value
+        source: product_description_feed
+        weight: -10
+        uuid: a5a89fac-accf-47e6-84a7-c0fb7abb450b
+      b7ce0091-2ca5-4b45-8c1f-84ad9ee0f464:
+        default_value: ' '
+        only_if_empty: true
+        plugin: default_value
+        source: product_mrp_feed
+        weight: 0
+        uuid: b7ce0091-2ca5-4b45-8c1f-84ad9ee0f464
+      313d3c6d-de87-4c2f-8712-828b38ff9d47:
+        character: ''
+        side: trim
+        plugin: trim
+        source: product_mrp_feed
+        weight: 1
+        uuid: 313d3c6d-de87-4c2f-8712-828b38ff9d47
+      d624719b-a713-48a0-b0a0-1117dec78851:
+        default_value: ' '
+        only_if_empty: true
+        plugin: default_value
+        source: product_price_feed
+        weight: 0
+        uuid: d624719b-a713-48a0-b0a0-1117dec78851
+      93a33c7c-a4c7-4bd2-a2cc-859bb84e0e43:
+        character: ''
+        side: trim
+        plugin: trim
+        source: product_price_feed
+        weight: 1
+        uuid: 93a33c7c-a4c7-4bd2-a2cc-859bb84e0e43
+      e53c2316-667a-455e-a3af-169a48389841:
+        default_value: ' '
+        only_if_empty: true
+        plugin: default_value
+        source: sale_or_deal_price
+        weight: 0
+        uuid: e53c2316-667a-455e-a3af-169a48389841
+      2059ba7b-b832-4556-88b6-fbaf53ed844c:
+        character: ''
+        side: trim
+        plugin: trim
+        source: sale_or_deal_price
+        weight: 1
+        uuid: 2059ba7b-b832-4556-88b6-fbaf53ed844c
+      169522df-298f-41dc-9f56-9b7e051740f0:
+        base_url: 'https://amazon.in'
+        plugin: url
+        source: product_url_feed
+        weight: 0
+        uuid: 169522df-298f-41dc-9f56-9b7e051740f0
+label: 'Amazon Feed Type 1'
+id: amazon_feed_type_1
+description: 'Enable to fetch products from categories pages with class="s-result-item.s-result-card-for-container.a-declarative.celwidget  "'
+import_period: 3600
+fetcher: advance_crawler
+fetcher_configuration:
+  fetcher_type: static_fetcher
+parser: html
+parser_configuration:
+  context:
+    value: //li[@class='s-result-item s-result-card-for-container a-declarative celwidget  ']
+  sources:
+    producttitle:
+      label: './crawler//span[@id="productTitle"]'
+      value: './crawler//span[@id="productTitle"]'
+    product_id_feed:
+      label: './crawler//div[@id=''averageCustomerReviews'']/@data-asin'
+      value: './crawler//div[@id=''averageCustomerReviews'']/@data-asin'
+    product_offers_feed:
+      label: './crawler//div[@id="quickPromoBucketContent"]/div/ul'
+      value: './crawler//div[@id="quickPromoBucketContent"]/div/ul'
+    product_url_feed:
+      label: './div/div[@class="a-row a-spacing-none"]/div[1]/a[@class="a-link-normal s-access-detail-page  s-color-twister-title-link a-text-normal"]/@href'
+      value: './div/div[@class="a-row a-spacing-none"]/div[1]/a[@class="a-link-normal s-access-detail-page  s-color-twister-title-link a-text-normal"]/@href'
+    product_description_feed:
+      label: './crawler//div[@id="productDescription"]'
+      value: './crawler//div[@id="productDescription"]'
+    product_seller_name:
+      label: './crawler//div[@id=''merchant-info'']/a[1]/text()'
+      value: './crawler//div[@id=''merchant-info'']/a[1]/text()'
+    product_mrp_feed:
+      label: './crawler//div[@id=''price'']/table/tbody/tr[1]/td[2]/span[1]'
+      value: './crawler//div[@id=''price'']/table/tbody/tr[1]/td[2]/span[1]'
+    product_price_feed:
+      label: './crawler//span[@id="priceblock_ourprice"]'
+      value: './crawler//span[@id="priceblock_ourprice"]'
+    product_brand_feed:
+      label: './crawler//div[@id=''bylineInfo_feature_div'']/div/a/@href'
+      value: './crawler//div[@id=''bylineInfo_feature_div'']/div/a/@href'
+    product_image_url_feed:
+      label: './crawler//img[@id=''landingImage'']/@data-old-hires'
+      value: './crawler//img[@id=''landingImage'']/@data-old-hires'
+    availability:
+      label: './crawler//div[@id=''availability'']/span/text()'
+      value: './crawler//div[@id=''availability'']/span/text()'
+    sale_or_deal_price:
+      label: './crawler//span[@id=''priceblock_dealprice''] | ./crawler//span[@id=''priceblock_saleprice'']'
+      value: './crawler//span[@id=''priceblock_dealprice''] | ./crawler//span[@id=''priceblock_saleprice'']'
+    _currency:
+      label: ./currency
+      value: ./currency
+    product_category_feed:
+      label: './crawler//div[@id="wayfinding-breadcrumbs_feature_div"]/ul/li'
+      value: './crawler//div[@id="wayfinding-breadcrumbs_feature_div"]/ul/li'
+    discount:
+      label: './crawler//div[@id=''price'']//tr[@id=''regularprice_savings'']/td[2]'
+      value: './crawler//div[@id=''price'']//tr[@id=''regularprice_savings'']/td[2]'
+    product_seller_rating:
+      label: './crawler//div[@id=''merchant-info'']'
+      value: './crawler//div[@id=''merchant-info'']'
+    _plugin_id:
+      label: ./plugin_id
+      value: ./plugin_id
+    product_color:
+      label: './crawler//div[@id=''variation_color_name'']/div/span/text()'
+      value: './crawler//div[@id=''variation_color_name'']/div/span/text()'
+    product_size_feed:
+      label: './crawler//div[@id=''variation_size_name'']//select[@id=''native_dropdown_selected_size_name'']/option[@class=''dropdownSelect''][1]'
+      value: './crawler//div[@id=''variation_size_name'']//select[@id=''native_dropdown_selected_size_name'']/option[@class=''dropdownSelect''][1]'
+  use_tidy: false
+  display_errors: false
+  source_encoding:
+    - auto
+  debug_mode: false
+  line_limit: 100
+processor: 'entity:affiliates_product'
+processor_configuration:
+  update_existing: 2
+  update_non_existent: _keep
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+  authorize: true
+  skip_hash_check: false
+  values: {  }
+custom_sources:
+  product_url_feed:
+    label: './div/div[@class="a-row a-spacing-none"]/div[1]/a[@class="a-link-normal s-access-detail-page  s-color-twister-title-link a-text-normal"]/@href'
+    value: './div/div[@class="a-row a-spacing-none"]/div[1]/a[@class="a-link-normal s-access-detail-page  s-color-twister-title-link a-text-normal"]/@href'
+    machine_name: product_url_feed
+  product_description_feed:
+    label: './crawler//div[@id="productDescription"]'
+    value: './crawler//div[@id="productDescription"]'
+    machine_name: product_description_feed
+  producttitle:
+    label: './crawler//span[@id="productTitle"]'
+    value: './crawler//span[@id="productTitle"]'
+    machine_name: producttitle
+  product_seller_name:
+    label: './crawler//div[@id=''merchant-info'']/a[1]/text()'
+    value: './crawler//div[@id=''merchant-info'']/a[1]/text()'
+    machine_name: product_seller_name
+  product_offers_feed:
+    label: './crawler//div[@id="quickPromoBucketContent"]/div/ul'
+    value: './crawler//div[@id="quickPromoBucketContent"]/div/ul'
+    machine_name: product_offers_feed
+  product_price_feed:
+    label: './crawler//span[@id="priceblock_ourprice"]'
+    value: './crawler//span[@id="priceblock_ourprice"]'
+    machine_name: product_price_feed
+  availability:
+    label: './crawler//div[@id=''availability'']/span/text()'
+    value: './crawler//div[@id=''availability'']/span/text()'
+    machine_name: availability
+  product_brand_feed:
+    label: './crawler//div[@id=''bylineInfo_feature_div'']/div/a/@href'
+    value: './crawler//div[@id=''bylineInfo_feature_div'']/div/a/@href'
+    machine_name: product_brand_feed
+  product_mrp_feed:
+    label: './crawler//div[@id=''price'']/table/tbody/tr[1]/td[2]/span[1]'
+    value: './crawler//div[@id=''price'']/table/tbody/tr[1]/td[2]/span[1]'
+    machine_name: product_mrp_feed
+  _currency:
+    label: ./currency
+    value: ./currency
+    machine_name: _currency
+  sale_or_deal_price:
+    label: './crawler//span[@id=''priceblock_dealprice''] | ./crawler//span[@id=''priceblock_saleprice'']'
+    value: './crawler//span[@id=''priceblock_dealprice''] | ./crawler//span[@id=''priceblock_saleprice'']'
+    machine_name: sale_or_deal_price
+  product_category_feed:
+    label: './crawler//div[@id="wayfinding-breadcrumbs_feature_div"]/ul/li'
+    value: './crawler//div[@id="wayfinding-breadcrumbs_feature_div"]/ul/li'
+    machine_name: product_category_feed
+  discount:
+    label: './crawler//div[@id=''price'']//tr[@id=''regularprice_savings'']/td[2]'
+    value: './crawler//div[@id=''price'']//tr[@id=''regularprice_savings'']/td[2]'
+    machine_name: discount
+  product_seller_rating:
+    label: './crawler//div[@id=''merchant-info'']'
+    value: './crawler//div[@id=''merchant-info'']'
+    machine_name: product_seller_rating
+  _plugin_id:
+    label: ./plugin_id
+    value: ./plugin_id
+    machine_name: _plugin_id
+  product_image_url_feed:
+    label: './crawler//img[@id=''landingImage'']/@data-old-hires'
+    value: './crawler//img[@id=''landingImage'']/@data-old-hires'
+    machine_name: product_image_url_feed
+  product_id_feed:
+    label: './crawler//div[@id=''averageCustomerReviews'']/@data-asin'
+    value: './crawler//div[@id=''averageCustomerReviews'']/@data-asin'
+    machine_name: product_id_feed
+  product_color:
+    label: './crawler//div[@id=''variation_color_name'']/div/span/text()'
+    value: './crawler//div[@id=''variation_color_name'']/div/span/text()'
+    machine_name: product_color
+  product_size_feed:
+    label: './crawler//div[@id=''variation_size_name'']//select[@id=''native_dropdown_selected_size_name'']/option[@class=''dropdownSelect''][1]'
+    value: './crawler//div[@id=''variation_size_name'']//select[@id=''native_dropdown_selected_size_name'']/option[@class=''dropdownSelect''][1]'
+    machine_name: product_size_feed
+mappings:
+  -
+    target: name
+    map:
+      value: producttitle
+    unique: {  }
+  -
+    target: product_id
+    map:
+      value: product_id_feed
+    unique:
+      value: '1'
+  -
+    target: offers
+    map:
+      value: product_offers_feed
+  -
+    target: product_url
+    map:
+      value: product_url_feed
+  -
+    target: product_description
+    map:
+      value: product_description_feed
+  -
+    target: seller_name
+    map:
+      value: product_seller_name
+    unique: {  }
+  -
+    target: maximum_retail_price
+    map:
+      value: product_mrp_feed
+    unique: {  }
+  -
+    target: vendor_selling_price
+    map:
+      value: product_price_feed
+    unique: {  }
+  -
+    target: product_brand
+    map:
+      value: product_brand_feed
+    unique: {  }
+  -
+    target: image_urls
+    map:
+      value: product_image_url_feed
+  -
+    target: in_stock
+    map:
+      value: availability
+  -
+    target: vendor_special_price
+    map:
+      value: sale_or_deal_price
+    unique: {  }
+  -
+    target: currency
+    map:
+      value: _currency
+    unique: {  }
+  -
+    target: product_family
+    map:
+      value: product_category_feed
+    unique: {  }
+  -
+    target: discount_percentage
+    map:
+      value: discount
+    unique: {  }
+  -
+    target: seller_average_rating
+    map:
+      value: product_seller_rating
+    unique: {  }
+  -
+    target: plugin_id
+    map:
+      value: _plugin_id
+    unique: {  }
+  -
+    target: color
+    map:
+      value: product_color
+    unique: {  }
+  -
+    target: size
+    map:
+      value: product_size_feed
+    unique: {  }

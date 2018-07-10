@@ -1,0 +1,13 @@
+name: 'Affiliates Connect Amazon Defaults'
+type: module
+description: 'Enable this module for a best-practice default setup of Affiliates Connect Amazon with the Scraper API. After installation it is recommended to uninstall this module again for performance reasons. The provided configuration will not be removed.'
+core: 8.x
+package: 'Affiliates Connect'
+dependencies:
+  - affiliates_connect
+  - affiliates_connect_amazon
+  - feeds
+  - feeds_advance_crawler
+  - feeds_ex
+  - tamper
+  - feeds_tamper

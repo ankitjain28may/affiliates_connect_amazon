@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.affiliates_product.feeds_item
+  module:
+    - affiliates_connect
+    - feeds
+id: affiliates_product.affiliates_product.feeds_item
+field_name: feeds_item
+entity_type: affiliates_product
+bundle: affiliates_product
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

@@ -1,0 +1,28 @@
+affiliates_connect_amazon.settings:
+  path: '/admin/config/affiliates-connect/amazon'
+  defaults:
+    _form: '\Drupal\affiliates_connect_amazon\Form\AffiliatesAmazonSettingsForm'
+    _title: 'Affiliates Connect Amazon Settings'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+
+affiliates_connect_amazon.item_look_up:
+  path: 'admin/config/affiliates-connect-amazon/itemlookup'
+  defaults:
+    _title: 'Affiliates Connect Amazon'
+    _controller: 'Drupal\affiliates_connect_amazon\Controller\ItemLookUpController::itemLookUp'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+
+affiliates_connect_amazon.affiliates_connect_amazon_item_lookup:
+  path: '/admin/config/affiliates-connect-amazon/search'
+  defaults:
+    _form: '\Drupal\affiliates_connect_amazon\Form\AmazonItemLookupForm'
+    _title: 'AmazonItemLookupForm'
+  requirements:
+    _access: 'TRUE'
+
