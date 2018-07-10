@@ -3,10 +3,10 @@
 namespace Drupal\affiliates_connect_amazon;
 
 /**
-* AmazonAdvItems contain image informations of product.
-* AmazonAdvItems->URL    : URL of the picture
-* AmazonAdvItems->Width  : Width of the picture
-* AmazonAdvItems->Height : Height of the picture
+* AmazonItems contain image informations of product.
+* AmazonItems->URL    : URL of the picture
+* AmazonItems->Width  : Width of the picture
+* AmazonItems->Height : Height of the picture
 *
 */
 class AmazonImage {

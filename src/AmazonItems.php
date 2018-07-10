@@ -3,11 +3,11 @@
 namespace Drupal\affiliates_connect_amazon;
 
 /**
-* AmazonAdvItems contain the result of AmazonAdv request.
-* AmazonAdvItems->TotalResults         : Number of products that Amazon returns
-* AmazonAdvItems->TotalPages           : Number of pages of products that Amazon returns
-* AmazonAdvItems->MoreSearchResultsUrl : URL of Amazon page which contain more products
-* AmazonAdvItems->Items                : Array of AmazonAdvItem objects
+* AmazonItems contain the result of AmazonAdv request.
+* Amazontems->TotalResults         : Number of products that Amazon returns
+* AmazonItems->TotalPages           : Number of pages of products that Amazon returns
+* AmazonItems->MoreSearchResultsUrl : URL of Amazon page which contain more products
+* AmazonItems->Items                : Array of AmazonAdvItem objects
 *
 */
 class AmazonItems {

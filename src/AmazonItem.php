@@ -3,17 +3,17 @@
 namespace Drupal\affiliates_connect_amazon;
 
 /**
-* AmazonAdvItem contain one Amazon product.
-* AmazonAdvItem->Author       : Author of the product (Exemple : J.K. Rowling...)
-* AmazonAdvItem->Creator      : Creator of the product (Exemple : Nom Prénom, Nom Prénom....)
-* AmazonAdvItem->Brand        : Brand of the product (Exemple : Nathan, Ubisoft...)
-* AmazonAdvItem->Manufacturer : Manufacturer (Exemple : Ubisoft, EA Games...)
-* AmazonAdvItem->ProductGroup : Product Group (Exemple : DVD, BOOKS...)
-* AmazonAdvItem->Title        : Title of the product (Iron Man, The Lord Of The Ring : The fellowship of the ring, ...)
-* AmazonAdvItem->URL          : URL of the Amazon page of the product (http://www.amazon.com/...)
-* AmazonAdvItem->Binding      : Binding of Books (Exemple : Paperback (Broché en francais))
-* AmazonAdvItem->Price        : Price of the product in cents (divide by 100 for get the reel price) (Exemple : 6550 = 65.50$)
-* AmazonAdvItem->CurrencyCode : Contain the currency use by the price (EUR, USD, ...)
+* AmazonItem contain one Amazon product.
+* AmazonItem->Author       : Author of the product (Exemple : J.K. Rowling...)
+* AmazonItem->Creator      : Creator of the product (Exemple : Nom Prénom, Nom Prénom....)
+* AmazonItem->Brand        : Brand of the product (Exemple : Nathan, Ubisoft...)
+* AmazonItem->Manufacturer : Manufacturer (Exemple : Ubisoft, EA Games...)
+* AmazonItem->ProductGroup : Product Group (Exemple : DVD, BOOKS...)
+* AmazonItem->Title        : Title of the product (Iron Man, The Lord Of The Ring : The fellowship of the ring, ...)
+* AmazonItem->URL          : URL of the Amazon page of the product (http://www.amazon.com/...)
+* AmazonItem->Binding      : Binding of Books (Exemple : Paperback (Broché en francais))
+* AmazonItem->Price        : Price of the product in cents (divide by 100 for get the reel price) (Exemple : 6550 = 65.50$)
+* AmazonItem->CurrencyCode : Contain the currency use by the price (EUR, USD, ...)
 *
 */
 class AmazonItem {
@@ -32,7 +32,7 @@ class AmazonItem {
   public $Warranty = '';
   public $Size = '';
   public $Color = '';
-  private $Images = array();
+  private $Images = [];
 
   const IMAGE_SWATCH     = 'SwatchImage';
   const IMAGE_SMALL      = 'SmallImage';
@@ -127,7 +127,7 @@ class AmazonItem {
   *
   * @return string
   */
-  public function getCurrencyChr() {
+  public function getCurrency() {
       switch($this->CurrencyCode) {
           case AmazonItem::CURRENCY_EURO :
               return '&euro;';
@@ -136,13 +136,13 @@ class AmazonItem {
               return '$';
           break;
           case AmazonItem::CURRENCY_JPY :
-              return '&yen;';
+              return '&yen';
           break;
           case AmazonItem::CURRENCY_GPB :
-              return '&pound;';
+              return '&pound';
           break;
           case AmazonItem::CURRENCY_INR :
-              return '₹;';
+              return '₹';
           break;
       }
       return '';
@@ -167,12 +167,12 @@ class AmazonItem {
       return round($this->SellingPrice/100, 2);
   }
   /**
-  * Return $this->getPrice(), with $this->getCurrencyChr() (Exemple : 16.5€, 9.33$)
+  * Return $this->getPrice(), with $this->getCurrency() (Exemple : 16.5€, 9.33$)
   *
   * @return string
   */
   public function getPriceWithCurrency() {
-      return $this->getPrice().$this->getCurrencyChr();
+      return $this->getPrice().$this->getCurrency();
   }
 
   /**
