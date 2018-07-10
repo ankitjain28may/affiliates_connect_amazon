@@ -3,6 +3,7 @@
 namespace Drupal\affiliates_connect_amazon\Plugin\AffiliatesNetwork;
 
 use Drupal\affiliates_connect\AffiliatesNetworkBase;
+use Drupal\affiliates_connect_amazon\AmazonItems;
 use Drupal\Core\Url;
 
 /**
@@ -183,9 +184,7 @@ class AmazonConnect extends AffiliatesNetworkBase implements AmazonConnectInterf
 
     if ($data->getStatusCode() == 200) {
       $xml = new \SimpleXMLElement($data->getBody());
-      foreach ($xml->Items as $item) {
-        $this->results[] = $item->Item;
-      }
+      $this->cleanResult($xml);
     }
     else {
       drupal_set_message($this->t('Request failed'), 'error', TRUE);
@@ -269,11 +268,17 @@ class AmazonConnect extends AffiliatesNetworkBase implements AmazonConnectInterf
     $this->setOptions([
       'Operation' => 'ItemSearch',
       'Service' => 'AWSECommerceService',
+      'ResponseGroup' => 'ItemAttributes,Offers,Reviews,Images',
       'Keywords' => $keyword,
       'SearchIndex' => $searchIndex,
     ]);
     $this->prepareLink();
     return $this;
+  }
+
+  public function cleanResult($XML)
+  {
+    $this->results = AmazonItems::createWithXml($XML);
   }
 
 

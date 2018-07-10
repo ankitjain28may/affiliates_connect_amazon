@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\affiliates_connect\AffiliatesNetworkManager;
 use Drupal\affiliates_connect_amazon\AmazonLocale;
+use Drupal\user\PrivateTempStoreFactory;
 
 /**
  * Class AmazonItemLookupForm.
@@ -40,13 +41,16 @@ class AmazonItemLookupForm extends FormBase {
    */
   protected $data;
 
+  protected $tempStore;
+
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('plugin.manager.affiliates_network')
+      $container->get('plugin.manager.affiliates_network'),
+      $container->get('user.private_tempstore')
     );
   }
 
@@ -56,8 +60,9 @@ class AmazonItemLookupForm extends FormBase {
    * @param \Drupal\affiliates_connect\AffiliatesNetworkManager $affiliatesNetworkManager
    *   The affiliates network manager.
    */
-  public function __construct(AffiliatesNetworkManager $affiliatesNetworkManager) {
+  public function __construct(AffiliatesNetworkManager $affiliatesNetworkManager, PrivateTempStoreFactory $temp_store_factory) {
     $this->affiliatesNetworkManager = $affiliatesNetworkManager;
+    $this->tempStore = $temp_store_factory->get('amazon_search');
     $this->amazon_locale = new AmazonLocale();
     $this->amazon = $this->affiliatesNetworkManager->createInstance('affiliates_connect_amazon');
     $this->amazon->setCredentials(
@@ -91,12 +96,12 @@ class AmazonItemLookupForm extends FormBase {
       '#options' => $this->buildCategories(),
       '#attributes' => ['class' => ['button']],
       '#empty_option' => 'Choose a Category',
-      '#default_value' => '',
+      '#default_value' => $this->tempStore->get('category'),
     ];
 
     $form['container']['keyword'] = [
       '#type' => 'textfield',
-      '#default_value' => '',
+      '#default_value' => $this->tempStore->get('keyword'),
       '#size' => 60,
       '#maxlength' => 60,
       '#placeholder' => 'Enter a keyword',
@@ -108,12 +113,16 @@ class AmazonItemLookupForm extends FormBase {
       '#value' => $this->t('Search'),
     ];
 
-    if ($this->data) {
+    if ($this->tempStore->get('data')) {
       $form['data'] = [
         '#type' => 'tableselect',
         '#header' => $this->getHeader(),
         '#options' => $this->buildRows(),
-        '#empty' => $this->t('No users found'),
+        '#empty' => $this->t('No products found'),
+      ];
+
+      $form['pager'] = [
+        '#type' => 'pager'
       ];
     }
 
@@ -133,14 +142,24 @@ class AmazonItemLookupForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
 
+
     $keyword = $values['keyword'];
     $category = $values['category'];
-
-    if ($category == 'asin') {
-      $this->data = $this->amazon->itemLookup($keyword)->getLink();
+    $some_data;
+    if (!$keyword) {
+      drupal_set_message($keyword, 'error', FALSE);
     } else {
-      $this->data = $this->amazon->itemSearch($keyword, $category)->getLink();
+      if ($category == 'asin') {
+        $some_data = $this->amazon->itemLookup($keyword)->execute()->getResults();
+      } else {
+        $some_data = $this->amazon->itemSearch($keyword, $category)->execute()->getResults();
+      }
+      $this->tempStore->set('data', $some_data);
     }
+    $this->tempStore->set('keyword', $keyword);
+    $this->tempStore->set('category', $category);
+
+    pager_default_initialize($some_data->$TotalPages, 10);
   }
 
   public function getHeader()
@@ -156,12 +175,13 @@ class AmazonItemLookupForm extends FormBase {
   public function buildRows()
   {
     $row = [];
-    foreach ($this->data as $key => $item) {
+    $data = $this->tempStore->get('data');
+    foreach ($data->Items as $key => $item) {
 
       $row[$key] = [
-        'image' => $item['id'],
-        'name' => $item['title'],
-        'description' => $item['body'],
+        'image' => $item->Title,
+        'name' => '',
+        'description' => '',
       ];
     }
     return $row;

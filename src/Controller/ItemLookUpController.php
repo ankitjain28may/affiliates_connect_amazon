@@ -47,8 +47,8 @@ class ItemLookUpController extends ControllerBase {
 
     $amazon->setCredentials($config->get('amazon_secret_key'), $config->get('amazon_access_key'), $config->get('amazon_associate_id'));
 
-    $result = $amazon->itemLookup('B01HQ0KCIQ')->execute()->getResults();
-    // $result = $amazon->itemSearch('shirts pants', 'All')->execute()->getLink();
+    // $result = $amazon->itemLookup('B01HQ0KCIQ')->execute()->getResults();
+    $result = $amazon->itemSearch('shirts pants', 'All')->execute()->getResults();
 
       // 'Operation' => 'ItemSearch',
       // 'Keywords' => 'shirts pants',
@@ -57,7 +57,7 @@ class ItemLookUpController extends ControllerBase {
       // 'MerchantId' => 'Amazon',
       // 'ResponseGroup' => 'ItemAttributes,Offers,Reviews,Images',
     // ]);
-    return drupal_set_message(print_r($result[0]->ASIN), TRUE);
+    return drupal_set_message(print_r($result->Items[0]->ASIN), TRUE);
     // foreach ($result as $key => $value) {
     //  drupal_set_message(print_r($value-), TRUE);
     // }
