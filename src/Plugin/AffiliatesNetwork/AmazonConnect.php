@@ -4,6 +4,7 @@ namespace Drupal\affiliates_connect_amazon\Plugin\AffiliatesNetwork;
 
 use Drupal\affiliates_connect\AffiliatesNetworkBase;
 use Drupal\affiliates_connect_amazon\AmazonItems;
+use Drupal\affiliates_connect_amazon\AmazonLocale;
 use Drupal\Core\Url;
 
 /**
@@ -104,11 +105,11 @@ class AmazonConnect extends AffiliatesNetworkBase implements AmazonConnectInterf
    *   The associates ID for the Product Advertising API account.
    *   This can be passed into the request as an option.
    */
-  public function setCredentials($secretKey, $accessKey, $associatesId, $locale = '.in') {
+  public function setCredentials($secretKey, $accessKey, $associatesId, $locale = 'IN') {
     $this->accessSecret = $secretKey;
-    $this->locale = $locale;
     $this->accessKey = $accessKey;
     $this->associatesId = $associatesId;
+    $this->locale = AmazonLocale::getURL($locale);
   }
 
   /**
@@ -276,10 +277,11 @@ class AmazonConnect extends AffiliatesNetworkBase implements AmazonConnectInterf
     return $this;
   }
 
+  /**
+   * @inheritdoc.
+   */
   public function cleanResult($XML)
   {
     $this->results = AmazonItems::createWithXml($XML);
   }
-
-
 }

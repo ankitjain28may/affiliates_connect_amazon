@@ -21,8 +21,16 @@ affiliates_connect_amazon.item_look_up:
 affiliates_connect_amazon.affiliates_connect_amazon_item_lookup:
   path: '/admin/config/affiliates-connect-amazon/search'
   defaults:
-    _form: '\Drupal\affiliates_connect_amazon\Form\AmazonItemLookupForm'
-    _title: 'AmazonItemLookupForm'
+    _form: '\Drupal\affiliates_connect_amazon\Form\AmazonItemSearchForm'
+    _title: 'Amazon Products Search Form'
   requirements:
     _access: 'TRUE'
 
+
+affiliates_connect_amazon.batch_import:
+  path: 'admin/config/affiliates-connect-amazon/batch-processing'
+  defaults:
+    _controller: '\Drupal\affiliates_connect_amazon\Controller\AmazonBatchImportController::startBatch'
+    _title: 'create'
+  requirements:
+    _permission: 'access content'

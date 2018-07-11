@@ -464,7 +464,7 @@ class AmazonLocale {
   public function getURL($locale)
   {
     $url = [
-      'BR' => '.br',
+      'BR' => '.com.br',
       'CA' => '.ca',
       'CN' => '.cn',
       'ES' => '.es',

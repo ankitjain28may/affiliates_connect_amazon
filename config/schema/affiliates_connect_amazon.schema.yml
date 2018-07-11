@@ -14,42 +14,24 @@ affiliates_connect_amazon.settings:
     amazon_secret_key:
       type: string
       label: 'Input associated token of corresponding Affiliate API'
-    scraper_api:
-      type: boolean
-      label: 'Allows usage Scraper API to overcome limitation of Affiliate API'
     data_storage:
       type: boolean
       label: 'Allows storing product data in your site database'
-    affiliate_import:
-      type: string
-      label: 'Import period for Affiliate API'
-    scraper_import:
-      type: string
-      label: 'Import period for Scraper API'
-    content_scrape:
-      type: boolean
-      label: 'Allows to scrape content on a daily basis'
-    scrape_timer:
-      type: string
-      label: 'Import period for content scraping'
     full_content:
       type: boolean
-      label: 'Allows scraping of content based on content'
-    reviews:
+      label: 'Allows updating of full content'
+    price:
       type: boolean
-      label: 'Allows scraping of content based on reviews'
+      label: 'Allows updating of price'
     available:
       type: boolean
-      label: 'Allows scraping of content based on availability'
+      label: 'Allows updating of products availability'
     size:
       type: boolean
-      label: 'Allows scraping of content based on size'
+      label: 'Allows updating of size'
     color:
       type: boolean
-      label: 'Allows scraping of content based on color'
+      label: 'Allows updating of color'
     offers:
       type: boolean
-      label: 'Allows scraping of content based on offers'
-    others:
-      type: boolean
-      label: 'Allows scraping of content based on other criteria'
+      label: 'Allows updating of offers'

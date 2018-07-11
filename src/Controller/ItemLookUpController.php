@@ -45,10 +45,11 @@ class ItemLookUpController extends ControllerBase {
     $amazon = $this->affiliatesNetworkManager->createInstance('affiliates_connect_amazon');
     $config = $this->config('affiliates_connect_amazon.settings');
 
-    $amazon->setCredentials($config->get('amazon_secret_key'), $config->get('amazon_access_key'), $config->get('amazon_associate_id'));
+    $amazon->setCredentials($config->get('amazon_secret_key'), $config->get('amazon_access_key'), $config->get('amazon_associate_id'), $config->get('locale'));
 
     // $result = $amazon->itemLookup('B01HQ0KCIQ')->execute()->getResults();
-    $result = $amazon->itemSearch('shirts pants', 'All')->execute()->getResults();
+    // $amazon->setOption('ItemPage', '2');
+    $result = $amazon->itemSearch('shirts pants', 'All')->getLink();
 
       // 'Operation' => 'ItemSearch',
       // 'Keywords' => 'shirts pants',
@@ -57,7 +58,7 @@ class ItemLookUpController extends ControllerBase {
       // 'MerchantId' => 'Amazon',
       // 'ResponseGroup' => 'ItemAttributes,Offers,Reviews,Images',
     // ]);
-    return drupal_set_message(print_r($result->Items[0]->ASIN), TRUE);
+    return drupal_set_message(print_r($result), TRUE);
     // foreach ($result as $key => $value) {
     //  drupal_set_message(print_r($value-), TRUE);
     // }

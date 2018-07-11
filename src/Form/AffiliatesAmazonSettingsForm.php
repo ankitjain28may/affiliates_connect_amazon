@@ -45,6 +45,7 @@ class AffiliatesAmazonSettingsForm extends AffiliatesConnectSettingsForm {
 
     $form['amazon_settings']['locale'] = [
       '#type' => 'select',
+      '#title' => $this->t('Select Locale'),
       '#options' => $this->getLocale(),
       '#empty_option' => 'Select Locale',
       '#default_value' => $config->get('locale'),
@@ -132,6 +133,55 @@ class AffiliatesAmazonSettingsForm extends AffiliatesConnectSettingsForm {
       '#default_value' => $config->get('data_storage'),
     ];
 
+    $form['amazon_settings']['native_api_form']['data_storage_form'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Plugin Update'),
+      '#open' => TRUE,
+      '#states' => [
+        "visible" => [
+          "input[name='data_storage']" => ["checked" => TRUE],
+        ],
+      ],
+      '#description' => $this->t('Update selected fields of the products'),
+    ];
+
+
+    $form['amazon_settings']['native_api_form']['data_storage_form']['full_content'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Full Content'),
+      '#default_value' => $config->get('full_content'),
+    ];
+
+    $form['amazon_settings']['native_api_form']['data_storage_form']['available'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Availability'),
+      '#default_value' => $config->get('available'),
+    ];
+
+    $form['amazon_settings']['native_api_form']['data_storage_form']['price'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Price'),
+      '#default_value' => $config->get('price'),
+    ];
+
+    $form['amazon_settings']['native_api_form']['data_storage_form']['size'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Size'),
+      '#default_value' => $config->get('size'),
+    ];
+
+    $form['amazon_settings']['native_api_form']['data_storage_form']['color'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Color'),
+      '#default_value' => $config->get('color'),
+    ];
+
+    $form['amazon_settings']['native_api_form']['data_storage_form']['offers'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Offers'),
+      '#default_value' => $config->get('offers'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -148,6 +198,12 @@ class AffiliatesAmazonSettingsForm extends AffiliatesConnectSettingsForm {
       ->set('amazon_access_key', $values['amazon_access_key'])
       ->set('amazon_secret_key', $values['amazon_secret_key'])
       ->set('data_storage', $values['data_storage'])
+      ->set('full_content', $values['full_content'])
+      ->set('price', $values['price'])
+      ->set('available', $values['available'])
+      ->set('size', $values['size'])
+      ->set('color', $values['color'])
+      ->set('offers', $values['offers'])
       ->save();
     parent::submitForm($form, $form_state);
   }
@@ -155,8 +211,7 @@ class AffiliatesAmazonSettingsForm extends AffiliatesConnectSettingsForm {
 
   public function getLocale()
   {
-    $amazon_locale = new AmazonLocale();
-    return $amazon_locale->getLocale();
+    return AmazonLocale::getLocale();
   }
 
 }

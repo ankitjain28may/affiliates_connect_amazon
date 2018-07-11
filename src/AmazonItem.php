@@ -41,11 +41,14 @@ class AmazonItem {
   const IMAGE_MEDIUM     = 'MediumImage';
   const IMAGE_LARGE      = 'LargeImage';
 
-  const CURRENCY_EURO = 'EUR';
-  const CURRENCY_USD  = 'USD';
-  const CURRENCY_GPB  = 'GPB';
-  const CURRENCY_JPY  = 'JPY';
-  const CURRENCY_INR  = 'INR';
+  const CURRENCY_EUR = 'EUR';
+  const CURRENCY_USD = 'USD';
+  const CURRENCY_GBP = 'GBP';
+  const CURRENCY_JPY = 'JPY';
+  const CURRENCY_INR = 'INR';
+  const CURRENCY_BRL = 'BRL';
+  const CURRENCY_CAD = 'CAD';
+  const CURRENCY_CNY = 'CNY';
 
   /**
   * Create an instance of AmazonAdvItem with a SimpleXMLElement object. (->Items)
@@ -129,20 +132,29 @@ class AmazonItem {
   */
   public function getCurrency() {
       switch($this->CurrencyCode) {
-          case AmazonItem::CURRENCY_EURO :
-              return '&euro;';
+          case AmazonItem::CURRENCY_EUR :
+              return 'EUR;';
           break;
           case AmazonItem::CURRENCY_USD :
               return '$';
           break;
           case AmazonItem::CURRENCY_JPY :
-              return '&yen';
+              return '￥';
           break;
-          case AmazonItem::CURRENCY_GPB :
-              return '&pound';
+          case AmazonItem::CURRENCY_GBP :
+              return '£';
           break;
           case AmazonItem::CURRENCY_INR :
               return '₹';
+          break;
+          case AmazonItem::CURRENCY_BRL :
+              return '‎R$';
+          break;
+          case AmazonItem::CURRENCY_CAD :
+              return 'CDN$';
+          break;
+          case AmazonItem::CURRENCY_CNY :
+              return '￥';
           break;
       }
       return '';
